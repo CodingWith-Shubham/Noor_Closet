@@ -4,28 +4,33 @@ import { motion } from 'framer-motion'
 import { Container } from '@/components/Container'
 import { SectionTitle } from '@/components/SectionTitle'
 import { ProductCard } from '@/components/ProductCard'
-import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 import { products } from '@/lib/data'
+import {
+  staggerContainerVariants,
+  staggerItemVariants,
+  transitionConfig,
+  viewportConfig,
+} from '@/lib/animations'
 
 export function NewArrivals() {
-  const { ref, isVisible } = useScrollAnimation()
-
   return (
-    <section ref={ref} className="py-20 sm:py-32 bg-cream">
+    <section className="py-20 sm:py-32 bg-cream">
       <Container>
         <SectionTitle
           main="New Arrivals"
           sub="Discover our latest premium designs"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.slice(0, 3).map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 40 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
-            >
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          variants={staggerContainerVariants}
+          initial="initial"
+          whileInView="whileInView"
+          exit="exit"
+          viewport={viewportConfig}
+        >
+          {products.slice(0, 3).map((product) => (
+            <motion.div key={product.id} variants={staggerItemVariants}>
               <ProductCard
                 name={product.name}
                 price={product.price}
@@ -34,13 +39,14 @@ export function NewArrivals() {
               />
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         <motion.div
           className="text-center mt-12"
-          initial={{ opacity: 0 }}
-          animate={isVisible ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.5 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={transitionConfig.smooth}
+          viewport={viewportConfig}
         >
           <button className="inline-flex items-center justify-center px-8 py-3 border-2 border-[#C8A97E] text-[#C8A97E] rounded-lg font-semibold hover:bg-[#C8A97E] hover:text-white transition-all duration-300">
             View All Products

@@ -4,28 +4,38 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Container } from '@/components/Container'
 import { SectionTitle } from '@/components/SectionTitle'
-import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 import { collections } from '@/lib/data'
+import {
+  staggerContainerVariants,
+  staggerItemVariants,
+  transitionConfig,
+  viewportConfig,
+  hoverScaleVariants,
+} from '@/lib/animations'
 
 export function FeaturedCollections() {
-  const { ref, isVisible } = useScrollAnimation()
-
   return (
-    <section ref={ref} className="py-20 sm:py-32 bg-gradient-to-b from-cream via-cream-light to-cream">
+    <section className="py-20 sm:py-32 bg-gradient-to-b from-cream via-cream-light to-cream">
       <Container>
         <SectionTitle
           main="Featured Collections"
           sub="Discover our curated selection of premium ethnic wear"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {collections.map((collection, index) => (
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          variants={staggerContainerVariants}
+          initial="initial"
+          whileInView="whileInView"
+          exit="exit"
+          viewport={viewportConfig}
+        >
+          {collections.map((collection) => (
             <motion.div
               key={collection.id}
-              initial={{ opacity: 0, y: 40 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              variants={staggerItemVariants}
               className="group cursor-pointer"
+              {...hoverScaleVariants}
             >
               <div className="relative overflow-hidden rounded-xl mb-4 aspect-square">
                 <Image
@@ -48,7 +58,7 @@ export function FeaturedCollections() {
               <p className="font-body text-sm text-[#6B6B6B]">{collection.description}</p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </Container>
     </section>
   )

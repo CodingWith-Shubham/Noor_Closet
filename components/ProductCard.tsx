@@ -1,8 +1,10 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Button } from './Button'
 import { cn } from '@/lib/data'
+import { hoverScaleVariants } from '@/lib/animations'
 
 interface ProductCardProps {
   name: string
@@ -20,15 +22,25 @@ export function ProductCard({
   className,
 }: ProductCardProps) {
   return (
-    <div className={cn('group', className)}>
+    <motion.div
+      className={cn('group', className)}
+      {...hoverScaleVariants}
+      whileHover={{ y: -8 }}
+    >
       <div className="relative overflow-hidden rounded-lg mb-4 aspect-square">
-        <Image
-          src={image}
-          alt={name}
-          fill
-          className="object-cover group-hover:scale-110 transition-transform duration-500"
-          unoptimized
-        />
+        <motion.div
+          className="w-full h-full"
+          whileHover={{ scale: 1.12 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Image
+            src={image}
+            alt={name}
+            fill
+            className="object-cover"
+            unoptimized
+          />
+        </motion.div>
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
       </div>
       <div className="space-y-2">
@@ -39,6 +51,6 @@ export function ProductCard({
       <Button variant="outline" size="sm" className="w-full mt-4">
         Quick View
       </Button>
-    </div>
+    </motion.div>
   )
 }

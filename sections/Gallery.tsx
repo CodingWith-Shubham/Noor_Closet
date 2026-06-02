@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Container } from '@/components/Container'
 import { SectionTitle } from '@/components/SectionTitle'
-import { useScrollAnimation } from '@/hooks/useScrollAnimation'
+import { transitionConfig, viewportConfig, imageHoverVariants } from '@/lib/animations'
 
 const galleryImages = [
   { id: 1, src: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421699/IMG_8638_c76wkm.png', size: 'large' },
@@ -16,36 +16,48 @@ const galleryImages = [
 ]
 
 export function Gallery() {
-  const { ref, isVisible } = useScrollAnimation()
-
   return (
-    <section ref={ref} className="py-20 sm:py-32 bg-cream-light">
+    <section className="py-20 sm:py-32 bg-cream-light">
       <Container>
         <SectionTitle
           main="Instagram Gallery"
           sub="Explore our latest looks and styling inspiration"
         />
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px]">
+        <motion.div
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px]"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          viewport={viewportConfig}
+          transition={transitionConfig.smooth}
+        >
           {galleryImages.map((image, index) => (
             <motion.div
               key={image.id}
               initial={{ opacity: 0, scale: 0.95 }}
-              animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.05 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: index * 0.08 }}
+              viewport={viewportConfig}
               className={`relative overflow-hidden rounded-lg cursor-pointer group ${
                 image.size === 'large' ? 'col-span-2 row-span-2' :
                 image.size === 'medium' ? 'col-span-1 row-span-1' :
                 'col-span-1 row-span-1'
               }`}
             >
-              <Image
-                src={image.src}
-                alt="Gallery"
-                fill
-                className="object-cover group-hover:scale-110 transition-transform duration-500"
-                unoptimized
-              />
+              <motion.div
+                className="w-full h-full"
+                whileHover={{ scale: 1.1 }}
+                transition={transitionConfig.smooth}
+              >
+                <Image
+                  src={image.src}
+                  alt="Gallery"
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              </motion.div>
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                 <motion.div
                   initial={{ scale: 0 }}
@@ -57,7 +69,7 @@ export function Gallery() {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </Container>
     </section>
   )

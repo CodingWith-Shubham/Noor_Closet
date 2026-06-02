@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Button } from '@/components/Button'
 import { AnimatedText } from '@/components/AnimatedText'
 import Image from 'next/image'
+import { transitionConfig, viewportConfig } from '@/lib/animations'
 
 export function HeroSection() {
   return (
@@ -12,8 +13,9 @@ export function HeroSection() {
       <motion.div
         className="absolute inset-0 z-0"
         initial={{ scale: 1.1 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 1.2, ease: 'easeOut' }}
+        whileInView={{ scale: 1 }}
+        transition={transitionConfig.smoothLonger}
+        viewport={viewportConfig}
       >
         <Image
           src="https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421696/IMG_8644_jqaxfu.png"
@@ -30,8 +32,9 @@ export function HeroSection() {
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-left">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={transitionConfig.smooth}
+          viewport={viewportConfig}
         >
           <p className="font-body text-sm uppercase tracking-widest text-[#C8A97E] mb-4">
             Embrace Your Elegance
@@ -48,8 +51,9 @@ export function HeroSection() {
         <motion.p
           className="font-body text-lg sm:text-xl text-[#6B6B6B] mb-8 max-w-2xl"
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={transitionConfig.smooth}
+          viewport={viewportConfig}
         >
           Curated ethnic wear crafted for timeless beauty and modern sophistication.
         </motion.p>
@@ -57,8 +61,9 @@ export function HeroSection() {
         <motion.div
           className="flex flex-col sm:flex-row gap-4"
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={transitionConfig.smooth}
+          viewport={viewportConfig}
         >
           <Button size="lg" className="shadow-luxury-lg">
             Explore Collection

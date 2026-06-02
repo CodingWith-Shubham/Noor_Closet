@@ -3,11 +3,9 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Container } from '@/components/Container'
-import { useScrollAnimation } from '@/hooks/useScrollAnimation'
+import { transitionConfig, viewportConfig } from '@/lib/animations'
 
 export function EditorialLookbook() {
-  const { ref, isVisible } = useScrollAnimation()
-
   const lookbookSections = [
     {
       title: 'The Festive Elegance',
@@ -30,12 +28,13 @@ export function EditorialLookbook() {
   ]
 
   return (
-    <section ref={ref} className="py-20 sm:py-32 bg-champagne">
+    <section className="py-20 sm:py-32 bg-champagne">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={transitionConfig.smooth}
+          viewport={viewportConfig}
           className="text-center mb-20"
         >
           <p className="font-body text-sm uppercase tracking-widest text-[#C8A97E] mb-4">
@@ -51,15 +50,22 @@ export function EditorialLookbook() {
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 40 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={viewportConfig}
               className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center ${
                 section.layout === 'right' ? 'lg:grid-cols-2 lg:auto-cols-auto' : ''
               }`}
             >
               {section.layout === 'left' ? (
                 <>
-                  <div className="relative h-96 lg:h-full min-h-96 rounded-xl overflow-hidden">
+                  <motion.div
+                    initial={{ opacity: 0, x: -40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={transitionConfig.smoothLonger}
+                    viewport={viewportConfig}
+                    className="relative h-96 lg:h-full min-h-96 rounded-xl overflow-hidden"
+                  >
                     <Image
                       src={section.image}
                       alt={section.title}
@@ -67,8 +73,14 @@ export function EditorialLookbook() {
                       className="object-cover"
                       unoptimized
                     />
-                  </div>
-                  <div className="flex flex-col justify-center">
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: 40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={transitionConfig.smoothLonger}
+                    viewport={viewportConfig}
+                    className="flex flex-col justify-center"
+                  >
                     <p className="font-body text-sm uppercase tracking-widest text-[#C8A97E] mb-2">
                       {`Story ${index + 1}`}
                     </p>
@@ -78,14 +90,24 @@ export function EditorialLookbook() {
                     <p className="font-body text-lg text-[#6B6B6B] mb-8">
                       {section.subtitle}
                     </p>
-                    <button className="w-fit px-6 py-3 border-2 border-[#C8A97E] text-[#C8A97E] rounded-lg font-semibold hover:bg-[#C8A97E] hover:text-white transition-all">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-fit px-6 py-3 border-2 border-[#C8A97E] text-[#C8A97E] rounded-lg font-semibold hover:bg-[#C8A97E] hover:text-white transition-all"
+                    >
                       View Story
-                    </button>
-                  </div>
+                    </motion.button>
+                  </motion.div>
                 </>
               ) : (
                 <>
-                  <div className="flex flex-col justify-center order-2 lg:order-1">
+                  <motion.div
+                    initial={{ opacity: 0, x: -40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={transitionConfig.smoothLonger}
+                    viewport={viewportConfig}
+                    className="flex flex-col justify-center order-2 lg:order-1"
+                  >
                     <p className="font-body text-sm uppercase tracking-widest text-[#C8A97E] mb-2">
                       {`Story ${index + 1}`}
                     </p>
@@ -95,11 +117,21 @@ export function EditorialLookbook() {
                     <p className="font-body text-lg text-[#6B6B6B] mb-8">
                       {section.subtitle}
                     </p>
-                    <button className="w-fit px-6 py-3 border-2 border-[#C8A97E] text-[#C8A97E] rounded-lg font-semibold hover:bg-[#C8A97E] hover:text-white transition-all">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-fit px-6 py-3 border-2 border-[#C8A97E] text-[#C8A97E] rounded-lg font-semibold hover:bg-[#C8A97E] hover:text-white transition-all"
+                    >
                       View Story
-                    </button>
-                  </div>
-                  <div className="relative h-96 lg:h-full min-h-96 rounded-xl overflow-hidden order-1 lg:order-2">
+                    </motion.button>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: 40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={transitionConfig.smoothLonger}
+                    viewport={viewportConfig}
+                    className="relative h-96 lg:h-full min-h-96 rounded-xl overflow-hidden order-1 lg:order-2"
+                  >
                     <Image
                       src={section.image}
                       alt={section.title}
@@ -107,7 +139,7 @@ export function EditorialLookbook() {
                       className="object-cover"
                       unoptimized
                     />
-                  </div>
+                  </motion.div>
                 </>
               )}
             </motion.div>
