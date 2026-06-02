@@ -33,6 +33,7 @@ export function FeaturedCollections() {
                   alt={collection.name}
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  unoptimized
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300" />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">

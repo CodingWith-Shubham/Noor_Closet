@@ -20,10 +20,11 @@ export function BrandStory() {
             className="relative h-96 lg:h-full min-h-96 rounded-2xl overflow-hidden"
           >
             <Image
-              src="/fashion_images/IMG_8635.png"
+              src="https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421695/IMG_8635_a6fyqp.png"
               alt="NOOR Story"
               fill
               className="object-cover"
+              unoptimized
             />
           </motion.div>
 

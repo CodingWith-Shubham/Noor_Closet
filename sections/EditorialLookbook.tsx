@@ -12,19 +12,19 @@ export function EditorialLookbook() {
     {
       title: 'The Festive Elegance',
       subtitle: 'Celebrate in timeless grace',
-      image: '/fashion_images/IMG_8663.png',
+      image: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421713/IMG_8663_fswymi.png',
       layout: 'left',
     },
     {
       title: 'Modern Minimalism',
       subtitle: 'Understated luxury meets contemporary style',
-      image: '/fashion_images/IMG_8668.png',
+      image: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421707/IMG_8665_ts2rod.png',
       layout: 'right',
     },
     {
       title: 'Heritage Revisited',
       subtitle: 'Traditional artistry for modern women',
-      image: '/fashion_images/8669.png',
+      image: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421784/8669_ooay0m.png',
       layout: 'left',
     },
   ]
@@ -65,6 +65,7 @@ export function EditorialLookbook() {
                       alt={section.title}
                       fill
                       className="object-cover"
+                      unoptimized
                     />
                   </div>
                   <div className="flex flex-col justify-center">
@@ -104,6 +105,7 @@ export function EditorialLookbook() {
                       alt={section.title}
                       fill
                       className="object-cover"
+                      unoptimized
                     />
                   </div>
                 </>

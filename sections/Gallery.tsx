@@ -7,12 +7,12 @@ import { SectionTitle } from '@/components/SectionTitle'
 import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 const galleryImages = [
-  { id: 1, src: '/fashion_images/IMG_8638.png', size: 'large' },
-  { id: 2, src: '/fashion_images/IMG_8650.png', size: 'small' },
-  { id: 3, src: '/fashion_images/IMG_8660.png', size: 'small' },
-  { id: 4, src: '/fashion_images/IMG_8661.png', size: 'large' },
-  { id: 5, src: '/fashion_images/IMG_8665.png', size: 'medium' },
-  { id: 6, src: '/fashion_images/IMG_8667.png', size: 'medium' },
+  { id: 1, src: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421699/IMG_8638_c76wkm.png', size: 'large' },
+  { id: 2, src: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421717/IMG_8650_ibevyu.png', size: 'small' },
+  { id: 3, src: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421709/IMG_8660_vhzk9x.png', size: 'small' },
+  { id: 4, src: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421712/IMG_8661_qrgohu.png', size: 'large' },
+  { id: 5, src: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421784/IMG_8665_ktopz6.png', size: 'medium' },
+  { id: 6, src: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421710/IMG_8667_ndjfej.png', size: 'medium' },
 ]
 
 export function Gallery() {
@@ -44,6 +44,7 @@ export function Gallery() {
                 alt="Gallery"
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
+                unoptimized
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                 <motion.div

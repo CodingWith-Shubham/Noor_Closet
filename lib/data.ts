@@ -7,7 +7,7 @@ export const products = [
     id: 1,
     name: 'Crushed Chinon Rust Anarkali',
     price: 3750,
-    image: '/fashion_images/IMG_8660.png',
+    image: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421709/IMG_8660_vhzk9x.png',
     category: 'Anarkalis',
     details: {
       fabric: 'Georgette Dupatta',
@@ -19,7 +19,7 @@ export const products = [
     id: 2,
     name: 'Yellow Satin Co-Ord Set',
     price: 3150,
-    image: '/fashion_images/IMG_8661.png',
+    image: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421712/IMG_8661_qrgohu.png',
     category: 'Co-ord Sets',
     details: {
       pieces: '2 pc',
@@ -33,7 +33,7 @@ export const products = [
     id: 3,
     name: 'Organza Mirror Work Co-Ord Set',
     price: 3800,
-    image: '/fashion_images/IMG_8663.png',
+    image: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421713/IMG_8663_fswymi.png',
     category: 'Co-ord Sets',
     details: {
       fabric: 'Organza',
@@ -50,25 +50,25 @@ export const collections = [
     id: 1,
     name: 'Anarkalis',
     description: 'Timeless elegance in traditional silhouette',
-    image: '/fashion_images/IMG_8650.png',
+    image: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421717/IMG_8650_ibevyu.png',
   },
   {
     id: 2,
     name: 'Co-ord Sets',
     description: 'Contemporary fusion of style and comfort',
-    image: '/fashion_images/IMG_8665.png',
+    image: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421784/IMG_8665_ktopz6.png',
   },
   {
     id: 3,
     name: 'Festive Wear',
     description: 'Celebrate every occasion in grandeur',
-    image: '/fashion_images/IMG_8667.png',
+    image: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421710/IMG_8667_ndjfej.png',
   },
   {
     id: 4,
     name: 'Everyday Elegance',
     description: 'Premium comfort for modern women',
-    image: '/fashion_images/IMG_8668.png',
+    image: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421707/IMG_8665_ts2rod.png',
   },
 ]
 

@@ -16,11 +16,12 @@ export function HeroSection() {
         transition={{ duration: 1.2, ease: 'easeOut' }}
       >
         <Image
-          src="/fashion_images/IMG_8644.png"
+          src="https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421696/IMG_8644_jqaxfu.png"
           alt="Hero"
           fill
           className="object-cover"
           priority
+          unoptimized
         />
         <div className="absolute inset-0 bg-gradient-to-r from-cream/70 via-cream/50 to-transparent" />
       </motion.div>
