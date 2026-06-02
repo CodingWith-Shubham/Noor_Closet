@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700&family=Inter:wght@100..900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #FFF8F2;
+  color: #1A1A1A;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  font-feature-settings: 'kern' 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF3EC;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C8A97E;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A88350;
+}
+
+/* Selection color */
+::selection {
+  background-color: #C8A97E;
+  color: #FFF8F2;
+}
+
+/* Smooth transitions */
+button, a {
+  transition: all 0.3s ease;
+}
+
+/* Utility classes */
+.section-padding {
+  padding: 6rem 2rem;
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 3rem 1rem;
+  }
+}
+
+.container-luxury {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+  .container-luxury {
+    padding: 0 1rem;
+  }
+}
+
+/* Gradient overlays */
+.gradient-overlay {
+  position: relative;
+}
+
+.gradient-overlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 248, 242, 0.8) 0%, rgba(250, 243, 236, 0.6) 100%);
+  pointer-events: none;
+}
+
+/* Premium link styles */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #C8A97E;
+}
+
+/* Luxury button reset */
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Loading animation */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(
+    to right,
+    #f6f7f8 0%,
+    #edeef1 20%,
+    #f6f7f8 40%,
+    #f6f7f8 100%
+  );
+  background-size: 1000px 100%;
+}
+
+/* Image optimization */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Subtle glow effect */
+.glow-accent {
+  box-shadow: 0 0 40px rgba(200, 169, 126, 0.2);
+}
+
+/* Premium focus states */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #C8A97E;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
