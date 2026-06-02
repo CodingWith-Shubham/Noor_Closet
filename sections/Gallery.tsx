@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Container } from '@/components/Container'
 import { SectionTitle } from '@/components/SectionTitle'
-import { transitionConfig, viewportConfig, imageHoverVariants } from '@/lib/animations'
+import { transitionConfig, viewportConfig} from '@/lib/animations'
 
 const galleryImages = [
   { id: 1, src: 'https://res.cloudinary.com/ddjxsqetl/image/upload/v1780421699/IMG_8638_c76wkm.png', size: 'large' },

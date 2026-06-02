@@ -5,25 +5,6 @@ import { Container } from '@/components/Container'
 import { transitionConfig, viewportConfig } from '@/lib/animations'
 
 export function Footer() {
-  const footerSections = [
-    {
-      title: 'Brand',
-      isSpecial: true,
-    },
-    {
-      title: 'Collections',
-      items: ['Anarkalis', 'Co-ord Sets', 'Festive Wear', 'Everyday Elegance'],
-    },
-    {
-      title: 'Support',
-      items: ['About Us', 'Contact', 'Shipping Info', 'Returns'],
-    },
-    {
-      title: 'Connect',
-      items: ['Instagram', 'Facebook', 'Pinterest'],
-    },
-  ]
-
   return (
     <footer className="bg-[#1A1A1A] text-white py-12 sm:py-16">
       <Container>
@@ -67,10 +48,7 @@ export function Footer() {
                   transition={{ ...transitionConfig.smooth, delay: 0.15 + i * 0.05 }}
                   viewport={viewportConfig}
                 >
-                  <a
-                    href="#"
-                    className="font-body text-sm text-white/70 hover:text-[#C8A97E] transition-colors"
-                  >
+                  <a href="#" className="font-body text-sm text-white/70 hover:text-[#C8A97E] transition-colors">
                     {item}
                   </a>
                 </motion.li>
@@ -95,10 +73,7 @@ export function Footer() {
                   transition={{ ...transitionConfig.smooth, delay: 0.25 + i * 0.05 }}
                   viewport={viewportConfig}
                 >
-                  <a
-                    href="#"
-                    className="font-body text-sm text-white/70 hover:text-[#C8A97E] transition-colors"
-                  >
+                  <a href="#" className="font-body text-sm text-white/70 hover:text-[#C8A97E] transition-colors">
                     {item}
                   </a>
                 </motion.li>

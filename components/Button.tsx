@@ -1,11 +1,10 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { motion } from 'framer-motion'
+import { motion, HTMLMotionProps } from 'framer-motion'
 import { cn } from '@/lib/data'
-import { buttonHoverVariants } from '@/lib/animations'
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends HTMLMotionProps<'button'> {
   variant?: 'primary' | 'secondary' | 'outline'
   size?: 'sm' | 'md' | 'lg'
   children: ReactNode
@@ -20,6 +19,9 @@ export function Button({
 }: ButtonProps) {
   return (
     <motion.button
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 10 }}
       className={cn(
         'font-body font-semibold transition-all duration-300 rounded-lg',
         variant === 'primary' && 'bg-[#C8A97E] text-white hover:bg-[#A88350] hover:shadow-luxury-md',
@@ -30,9 +32,6 @@ export function Button({
         size === 'lg' && 'px-8 py-4 text-lg',
         className
       )}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 10 }}
       {...props}
     >
       {children}

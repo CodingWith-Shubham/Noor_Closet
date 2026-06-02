@@ -8,7 +8,7 @@ import { collections } from '@/lib/data'
 import {
   staggerContainerVariants,
   staggerItemVariants,
-  transitionConfig,
+  // transitionConfig,
   viewportConfig,
   hoverScaleVariants,
 } from '@/lib/animations'
