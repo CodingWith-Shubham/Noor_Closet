@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { razorpay } from "@/lib/razorpay";
+import { getRazorpayClient } from "@/lib/razorpay";
 
 export async function POST(req: Request) {
   try {
     const { amount } = await req.json();
+    const razorpay = getRazorpayClient();
 
     const options = {
       amount: amount * 100, // Razorpay works in paise
