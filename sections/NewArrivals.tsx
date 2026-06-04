@@ -32,6 +32,7 @@ export function NewArrivals() {
           {products.slice(0, 3).map((product) => (
             <motion.div key={product.id} variants={staggerItemVariants}>
               <ProductCard
+                id={product.id}
                 name={product.name}
                 price={product.price}
                 image={product.image}

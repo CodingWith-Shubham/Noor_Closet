@@ -1,29 +1,34 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import { Button } from './Button'
-import { cn } from '@/lib/data'
-import { hoverScaleVariants } from '@/lib/animations'
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Button } from "./Button";
+import { cn } from "@/lib/data";
+import { hoverScaleVariants } from "@/lib/animations";
 
 interface ProductCardProps {
-  name: string
-  price: number
-  image: string
-  category: string
-  className?: string
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  category: string;
+  className?: string;
 }
 
 export function ProductCard({
+  id,
   name,
   price,
   image,
   category,
   className,
 }: ProductCardProps) {
+  const router = useRouter();
+
   return (
     <motion.div
-      className={cn('group', className)}
+      className={cn("group", className)}
       {...hoverScaleVariants}
       whileHover={{ y: -8 }}
     >
@@ -33,24 +38,23 @@ export function ProductCard({
           whileHover={{ scale: 1.12 }}
           transition={{ duration: 0.5 }}
         >
-          <Image
-            src={image}
-            alt={name}
-            fill
-            className="object-cover"
-            unoptimized
-          />
+          <Image src={image} alt={name} fill className="object-cover" unoptimized />
         </motion.div>
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
       </div>
       <div className="space-y-2">
         <p className="text-sm text-[#6B6B6B] uppercase tracking-widest">{category}</p>
         <h3 className="font-display text-lg text-[#1A1A1A]">{name}</h3>
-        <p className="font-body text-base font-semibold text-[#C8A97E]">₹{price}</p>
+        <p className="font-body text-base font-semibold text-[#C8A97E]">Rs. {price}</p>
       </div>
-      <Button variant="outline" size="sm" className="w-full mt-4">
-        Quick View
+      <Button
+        variant="outline"
+        size="sm"
+        className="w-full mt-4"
+        onClick={() => router.push(`/checkout?productId=${id}`)}
+      >
+        Order Now
       </Button>
     </motion.div>
-  )
+  );
 }
