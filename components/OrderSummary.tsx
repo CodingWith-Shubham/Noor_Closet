@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { CartItem } from "@/lib/types";
 
 type OrderSummaryProps = {
@@ -22,6 +23,34 @@ export default function OrderSummary({
   onSizeChange,
   onQuantityChange,
 }: OrderSummaryProps) {
+  const [quantityInput, setQuantityInput] = useState(String(quantity));
+
+  useEffect(() => {
+    setQuantityInput(String(quantity));
+  }, [quantity]);
+
+  const handleQuantityChange = (value: string) => {
+    if (value === "") {
+      setQuantityInput("");
+      return;
+    }
+
+    if (!/^\d+$/.test(value)) {
+      return;
+    }
+
+    const nextQuantity = Math.max(1, Math.min(10, Number(value)));
+    setQuantityInput(String(nextQuantity));
+    onQuantityChange?.(nextQuantity);
+  };
+
+  const handleQuantityBlur = () => {
+    if (quantityInput === "") {
+      setQuantityInput("1");
+      onQuantityChange?.(1);
+    }
+  };
+
   return (
     <aside className="bg-white p-6 rounded-xl shadow-sm border border-champagne">
       <h2 className="text-2xl font-serif text-primary mb-6 border-b border-champagne pb-2">
@@ -82,8 +111,11 @@ export default function OrderSummary({
                 min={1}
                 max={10}
                 type="number"
-                value={quantity}
-                onChange={(event) => onQuantityChange(Number(event.target.value))}
+                inputMode="numeric"
+                value={quantityInput}
+                onFocus={(event) => event.currentTarget.select()}
+                onChange={(event) => handleQuantityChange(event.target.value)}
+                onBlur={handleQuantityBlur}
                 className="w-full rounded-md border border-champagne bg-white p-3 outline-none focus:ring-1 focus:ring-gold-accent"
               />
             </label>
