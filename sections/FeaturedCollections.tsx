@@ -12,10 +12,14 @@ import {
   viewportConfig,
   hoverScaleVariants,
 } from '@/lib/animations'
+import { scrollToSection } from '@/lib/scrollToSection'
 
 export function FeaturedCollections() {
   return (
-    <section className="py-20 sm:py-32 bg-gradient-to-b from-cream via-cream-light to-cream">
+    <section
+      id="featured-collections"
+      className="scroll-mt-8 py-20 sm:py-32 bg-gradient-to-b from-cream via-cream-light to-cream"
+    >
       <Container>
         <SectionTitle
           main="Featured Collections"
@@ -47,7 +51,10 @@ export function FeaturedCollections() {
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300" />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button className="bg-white text-[#1A1A1A] px-6 py-2 rounded-lg font-semibold text-sm">
+                  <button
+                    onClick={() => scrollToSection('new-arrivals')}
+                    className="bg-white text-[#1A1A1A] px-6 py-2 rounded-lg font-semibold text-sm"
+                  >
                     Explore
                   </button>
                 </div>

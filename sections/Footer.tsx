@@ -1,12 +1,35 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { FormEvent, useState } from 'react'
 import { Container } from '@/components/Container'
 import { transitionConfig, viewportConfig } from '@/lib/animations'
 
 export function Footer() {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+
+  const handleSubscribe = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setStatus('loading')
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+
+      if (!response.ok) throw new Error()
+      setEmail('')
+      setStatus('success')
+    } catch {
+      setStatus('error')
+    }
+  }
+
   return (
-    <footer className="bg-[#1A1A1A] text-white py-12 sm:py-16">
+    <footer id="contact-us" className="scroll-mt-8 bg-[#1A1A1A] text-white py-12 sm:py-16">
       <Container>
         <motion.div
           className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12"
@@ -113,20 +136,31 @@ export function Footer() {
               viewport={viewportConfig}
             >
               <p className="font-body text-xs text-white/50 mb-2">Subscribe to updates</p>
-              <div className="flex">
+              <form onSubmit={handleSubscribe} className="flex">
                 <input
+                  required
                   type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                   placeholder="Your email"
                   className="flex-1 bg-white/10 px-3 py-2 text-sm text-white placeholder-white/50 rounded-l-lg focus:outline-none"
                 />
                 <motion.button
+                  type="submit"
+                  disabled={status === 'loading'}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="bg-[#C8A97E] px-4 py-2 text-sm font-semibold rounded-r-lg hover:bg-[#A88350] transition-colors"
                 >
-                  Join
+                  {status === 'loading' ? '...' : 'Join'}
                 </motion.button>
-              </div>
+              </form>
+              {status === 'success' && (
+                <p className="mt-2 font-body text-xs text-[#C8A97E]">Subscribed successfully.</p>
+              )}
+              {status === 'error' && (
+                <p className="mt-2 font-body text-xs text-red-300">Please try again.</p>
+              )}
             </motion.div>
           </motion.div>
         </motion.div>

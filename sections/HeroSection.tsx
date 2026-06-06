@@ -5,6 +5,7 @@ import { Button } from '@/components/Button'
 import { AnimatedText } from '@/components/AnimatedText'
 import Image from 'next/image'
 import { transitionConfig, viewportConfig } from '@/lib/animations'
+import { scrollToSection } from '@/lib/scrollToSection'
 
 export function HeroSection() {
   return (
@@ -65,10 +66,18 @@ export function HeroSection() {
           transition={transitionConfig.smooth}
           viewport={viewportConfig}
         >
-          <Button size="lg" className="shadow-luxury-lg">
+          <Button
+            size="lg"
+            className="shadow-luxury-lg"
+            onClick={() => scrollToSection('featured-collections')}
+          >
             Explore Collection
           </Button>
-          <Button size="lg" variant="outline">
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={() => scrollToSection('lookbook-stories')}
+          >
             View Lookbook
           </Button>
         </motion.div>

@@ -2,12 +2,15 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { useState } from 'react'
 import { Container } from '@/components/Container'
 import { transitionConfig, viewportConfig, buttonHoverVariants } from '@/lib/animations'
 
 export function BrandStory() {
+  const [isStoryExpanded, setIsStoryExpanded] = useState(false)
+
   return (
-    <section className="py-20 sm:py-32 bg-gradient-to-r from-cream via-cream-light to-champagne">
+    <section id="brand-story" className="scroll-mt-8 py-20 sm:py-32 bg-gradient-to-r from-cream via-cream-light to-champagne">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Image */}
@@ -71,6 +74,20 @@ export function BrandStory() {
                   {text}
                 </motion.p>
               ))}
+              {isStoryExpanded && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-4"
+                >
+                  <p className="font-body text-lg text-[#1A1A1A] leading-relaxed">
+                    From festive statements to effortless everyday pieces, every NOOR collection is selected to feel personal, versatile, and enduring.
+                  </p>
+                  <p className="font-body text-lg text-[#1A1A1A] leading-relaxed">
+                    Our purpose is simple: to help every woman embrace her own light through clothing that honours tradition without being bound by it.
+                  </p>
+                </motion.div>
+              )}
             </div>
 
             <motion.button
@@ -79,9 +96,11 @@ export function BrandStory() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={transitionConfig.smooth}
               viewport={viewportConfig}
+              onClick={() => setIsStoryExpanded((expanded) => !expanded)}
+              aria-expanded={isStoryExpanded}
               className="inline-flex items-center justify-center px-8 py-3 bg-[#C8A97E] text-white rounded-lg font-semibold hover:bg-[#A88350] transition-all duration-300 shadow-luxury-md"
             >
-              Explore Our Story
+              {isStoryExpanded ? 'Show Less' : 'Explore Our Story'}
             </motion.button>
           </motion.div>
         </div>

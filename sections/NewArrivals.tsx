@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { Container } from '@/components/Container'
 import { SectionTitle } from '@/components/SectionTitle'
 import { ProductCard } from '@/components/ProductCard'
@@ -13,8 +14,10 @@ import {
 } from '@/lib/animations'
 
 export function NewArrivals() {
+  const [showingAll, setShowingAll] = useState(false)
+
   return (
-    <section className="py-20 sm:py-32 bg-cream">
+    <section id="new-arrivals" className="scroll-mt-8 py-20 sm:py-32 bg-cream">
       <Container>
         <SectionTitle
           main="New Arrivals"
@@ -49,8 +52,13 @@ export function NewArrivals() {
           transition={transitionConfig.smooth}
           viewport={viewportConfig}
         >
-          <button className="inline-flex items-center justify-center px-8 py-3 border-2 border-[#C8A97E] text-[#C8A97E] rounded-lg font-semibold hover:bg-[#C8A97E] hover:text-white transition-all duration-300">
-            View All Products
+          <button
+            type="button"
+            onClick={() => setShowingAll(true)}
+            disabled={showingAll}
+            className="inline-flex items-center justify-center px-8 py-3 border-2 border-[#C8A97E] text-[#C8A97E] rounded-lg font-semibold hover:bg-[#C8A97E] hover:text-white transition-all duration-300 disabled:cursor-default disabled:bg-[#C8A97E] disabled:text-white"
+          >
+            {showingAll ? 'All Products Displayed' : 'View All Products'}
           </button>
         </motion.div>
       </Container>

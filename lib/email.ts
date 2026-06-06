@@ -166,3 +166,30 @@ export async function sendOwnerOrderEmail(order: OrderEmailInput) {
     console.error("Resend Email Error:", error);
   }
 }
+
+export async function sendNewsletterSignupEmail(email: string) {
+  const to = process.env.OWNER_ORDER_EMAIL;
+  const from = process.env.RESEND_FROM_EMAIL || "NOOR Closet <onboarding@resend.dev>";
+
+  if (!process.env.RESEND_API_KEY || !to) {
+    throw new Error("Missing Resend email configuration");
+  }
+
+  const { error } = await resend.emails.send({
+    from,
+    to,
+    subject: "New NOOR newsletter signup",
+    text: `A new visitor subscribed to NOOR updates.\n\nEmail: ${email}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; color: #1a1a1a;">
+        <h1 style="font-size: 22px;">New newsletter signup</h1>
+        <p>A new visitor subscribed to NOOR updates.</p>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+      </div>
+    `,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
