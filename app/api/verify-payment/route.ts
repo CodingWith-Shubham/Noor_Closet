@@ -7,6 +7,10 @@ import {
   InvalidCheckoutTokenError,
   verifyCheckoutToken,
 } from "@/lib/checkoutToken";
+import {
+  validateCustomerDetails,
+  InvalidCustomerDetailsError,
+} from "@/lib/customerDetails";
 import { InvalidCartError, priceCart } from "@/lib/serverCart";
 import {
   formatProductDetails,
@@ -46,6 +50,7 @@ export async function POST(req: Request) {
     }
 
     const checkout = verifyCheckoutToken(checkoutToken);
+    const validatedCustomer = validateCustomerDetails(customerDetails);
     const pricedCart = priceCart(checkout.cart);
     const razorpayOrderId = checkout.orderId;
 
@@ -104,12 +109,12 @@ export async function POST(req: Request) {
       timestamp,
       razorpayOrderId,
       razorpay_payment_id,
-      customerDetails.fullName,
-      customerDetails.phone,
-      customerDetails.address,
-      customerDetails.city,
-      customerDetails.state,
-      customerDetails.pincode,
+      validatedCustomer.fullName,
+      validatedCustomer.phone,
+      validatedCustomer.address,
+      validatedCustomer.city,
+      validatedCustomer.state,
+      validatedCustomer.pincode,
       productDetails,
       totalQty,
       pricedCart.totalAmount,
@@ -120,7 +125,7 @@ export async function POST(req: Request) {
     await sendOwnerOrderEmail({
       orderId: razorpayOrderId,
       paymentId: razorpay_payment_id,
-      customerDetails,
+      customerDetails: validatedCustomer,
       cartItems: pricedCart.cartItems,
       totalAmount: pricedCart.totalAmount,
       paymentStatus: "Paid",
@@ -138,6 +143,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
     if (error instanceof InvalidCheckoutTokenError) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+    if (error instanceof InvalidCustomerDetailsError) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
     return NextResponse.json({ error: "Server error during verification" }, { status: 500 });

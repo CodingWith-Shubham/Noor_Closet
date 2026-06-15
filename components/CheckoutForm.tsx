@@ -50,8 +50,11 @@ export default function CheckoutForm({ cartItems, totalAmount }: CheckoutFormPro
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         customerDetails: formData,
-        cartItems,
-        totalAmount,
+        cartItems: cartItems.map(({ id, quantity, size }) => ({
+          id,
+          quantity,
+          size,
+        })),
       }),
     });
 
