@@ -39,9 +39,9 @@ export default function CheckoutForm({ cartItems, totalAmount }: CheckoutFormPro
     });
   };
 
-  const redirectToSuccess = (orderId: string) => {
+  const redirectToSuccess = (orderId: string, paidAmount = totalAmount) => {
     const name = encodeURIComponent(formData.fullName);
-    router.push(`/order-success?orderId=${orderId}&amount=${totalAmount}&name=${name}`);
+    router.push(`/order-success?orderId=${orderId}&amount=${paidAmount}&name=${name}`);
   };
 
   const placeCodOrder = async () => {
@@ -74,7 +74,13 @@ export default function CheckoutForm({ cartItems, totalAmount }: CheckoutFormPro
     const orderRes = await fetch("/api/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: totalAmount }),
+      body: JSON.stringify({
+        cartItems: cartItems.map(({ id, quantity, size }) => ({
+          id,
+          quantity,
+          size,
+        })),
+      }),
     });
     const orderData = await orderRes.json();
 
@@ -84,8 +90,8 @@ export default function CheckoutForm({ cartItems, totalAmount }: CheckoutFormPro
 
     const options = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-      amount: totalAmount * 100,
-      currency: "INR",
+      amount: orderData.amount,
+      currency: orderData.currency,
       name: "NOOR Closet",
       description: "Premium Ethnic Wear",
       order_id: orderData.orderId,
@@ -98,15 +104,18 @@ export default function CheckoutForm({ cartItems, totalAmount }: CheckoutFormPro
           body: JSON.stringify({
             ...response,
             customerDetails: formData,
-            cartItems,
-            totalAmount,
+            cartItems: cartItems.map(({ id, quantity, size }) => ({
+              id,
+              quantity,
+              size,
+            })),
           }),
         });
 
         const verifyData = await verifyRes.json();
         if (verifyRes.ok && verifyData.success) {
           toast.success("Payment successful", { id: "verify" });
-          redirectToSuccess(verifyData.orderId);
+          redirectToSuccess(verifyData.orderId, verifyData.amount);
         } else {
           toast.error("Verification failed", { id: "verify" });
           router.push("/payment-failed");
