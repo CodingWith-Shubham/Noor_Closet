@@ -102,13 +102,10 @@ export default function CheckoutForm({ cartItems, totalAmount }: CheckoutFormPro
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            ...response,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            checkoutToken: orderData.checkoutToken,
             customerDetails: formData,
-            cartItems: cartItems.map(({ id, quantity, size }) => ({
-              id,
-              quantity,
-              size,
-            })),
           }),
         });
 

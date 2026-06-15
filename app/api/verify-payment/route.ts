@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import { appendOrderToSheet } from "@/lib/googleSheets";
+import { appendOrderToSheet, findOrderByPaymentId } from "@/lib/googleSheets";
 import { sendOwnerOrderEmail } from "@/lib/email";
 import { getRazorpayClient } from "@/lib/razorpay";
+import {
+  InvalidCheckoutTokenError,
+  verifyCheckoutToken,
+} from "@/lib/checkoutToken";
 import { InvalidCartError, priceCart } from "@/lib/serverCart";
 import {
   formatProductDetails,
@@ -13,11 +17,10 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const {
-      razorpay_order_id,
       razorpay_payment_id,
       razorpay_signature,
+      checkoutToken,
       customerDetails,
-      cartItems,
     } = body;
 
     const secret = process.env.RAZORPAY_KEY_SECRET;
@@ -26,17 +29,39 @@ export async function POST(req: Request) {
     }
 
     if (
-      typeof razorpay_order_id !== "string" ||
       typeof razorpay_payment_id !== "string" ||
       typeof razorpay_signature !== "string"
     ) {
       return NextResponse.json({ error: "Invalid payment details" }, { status: 400 });
     }
 
-    const pricedCart = priceCart(cartItems);
+    const existingOrder = await findOrderByPaymentId(razorpay_payment_id);
+    if (existingOrder) {
+      return NextResponse.json({
+        success: true,
+        orderId: existingOrder.orderId,
+        amount: existingOrder.amount,
+        alreadyProcessed: true,
+      });
+    }
+
+    const checkout = verifyCheckoutToken(checkoutToken);
+    const pricedCart = priceCart(checkout.cart);
+    const razorpayOrderId = checkout.orderId;
+
+    if (
+      pricedCart.fingerprint !== checkout.fingerprint ||
+      pricedCart.totalAmountPaise !== checkout.amountPaise
+    ) {
+      return NextResponse.json(
+        { error: "Checkout session does not match the order" },
+        { status: 400 }
+      );
+    }
+
     const expectedSignature = crypto
       .createHmac("sha256", secret)
-      .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+      .update(`${razorpayOrderId}|${razorpay_payment_id}`)
       .digest("hex");
     const expectedBuffer = Buffer.from(expectedSignature, "hex");
     const receivedBuffer = Buffer.from(razorpay_signature, "hex");
@@ -50,7 +75,7 @@ export async function POST(req: Request) {
 
     const razorpay = getRazorpayClient();
     const [order, payment] = await Promise.all([
-      razorpay.orders.fetch(razorpay_order_id),
+      razorpay.orders.fetch(razorpayOrderId),
       razorpay.payments.fetch(razorpay_payment_id),
     ]);
     const orderFingerprint = String(order.notes?.cart_fingerprint ?? "");
@@ -58,10 +83,12 @@ export async function POST(req: Request) {
     if (
       Number(order.amount) !== pricedCart.totalAmountPaise ||
       order.currency !== "INR" ||
+      order.status !== "paid" ||
       orderFingerprint !== pricedCart.fingerprint ||
-      payment.order_id !== razorpay_order_id ||
+      payment.order_id !== razorpayOrderId ||
       Number(payment.amount) !== pricedCart.totalAmountPaise ||
-      payment.currency !== "INR"
+      payment.currency !== "INR" ||
+      payment.status !== "captured"
     ) {
       return NextResponse.json(
         { error: "Payment does not match the order" },
@@ -75,7 +102,7 @@ export async function POST(req: Request) {
 
     const sheetData = [
       timestamp,
-      razorpay_order_id,
+      razorpayOrderId,
       razorpay_payment_id,
       customerDetails.fullName,
       customerDetails.phone,
@@ -91,7 +118,7 @@ export async function POST(req: Request) {
     await appendOrderToSheet(sheetData);
 
     await sendOwnerOrderEmail({
-      orderId: razorpay_order_id,
+      orderId: razorpayOrderId,
       paymentId: razorpay_payment_id,
       customerDetails,
       cartItems: pricedCart.cartItems,
@@ -102,12 +129,15 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      orderId: razorpay_order_id,
+      orderId: razorpayOrderId,
       amount: pricedCart.totalAmount,
     });
   } catch (error) {
     console.error("Verification Error:", error);
     if (error instanceof InvalidCartError) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+    if (error instanceof InvalidCheckoutTokenError) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
     return NextResponse.json({ error: "Server error during verification" }, { status: 500 });

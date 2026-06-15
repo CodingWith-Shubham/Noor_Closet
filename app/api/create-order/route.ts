@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getRazorpayClient } from "@/lib/razorpay";
+import { createCheckoutToken } from "@/lib/checkoutToken";
 import { InvalidCartError, priceCart } from "@/lib/serverCart";
 
 export async function POST(req: Request) {
@@ -18,12 +19,23 @@ export async function POST(req: Request) {
     };
 
     const order = await razorpay.orders.create(options);
+    const checkoutToken = createCheckoutToken({
+      orderId: order.id,
+      cart: pricedCart.cartItems.map(({ id, quantity, size }) => ({
+        id,
+        quantity,
+        size,
+      })),
+      fingerprint: pricedCart.fingerprint,
+      amountPaise: pricedCart.totalAmountPaise,
+    });
 
     return NextResponse.json(
       {
         orderId: order.id,
         amount: pricedCart.totalAmountPaise,
         currency: order.currency,
+        checkoutToken,
       },
       { status: 200 }
     );
